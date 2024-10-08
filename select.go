@@ -26,8 +26,8 @@ func NewSelect[T any](items []T, getName func(T) string) Input[SelectState[T]] {
 	}
 
 	return Input[SelectState[T]]{
-		render:          render[T],
-		handleInput:     handleInput[T],
+		render:          renderSelect[T],
+		handleInput:     handleSelect[T],
 		close:           closeSelect[T],
 		userPrompt:      "Select an Option",
 		inputPrompt:     "› - Use arrow-keys. Return to submit.",
@@ -40,7 +40,7 @@ func NewSelect[T any](items []T, getName func(T) string) Input[SelectState[T]] {
 	}
 }
 
-func render[T any](s *SelectState[T], rerender bool) {
+func renderSelect[T any](s *SelectState[T], rerender bool) {
 	if rerender {
 		// Move cursor to top
 		cursor.UpN(len(s.items) - 1)
@@ -70,7 +70,7 @@ func render[T any](s *SelectState[T], rerender bool) {
 	}
 }
 
-func handleInput[T any](s *SelectState[T], key keys.Key) (stop bool, err error) {
+func handleSelect[T any](s *SelectState[T], key keys.Key) (stop bool, err error) {
 	switch key.Code {
 	case keys.Left:
 		s.cursorPos = 0
