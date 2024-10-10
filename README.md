@@ -5,7 +5,7 @@
 - [x] Text
 - [x] Text Sensitive
 - [x] Checkboxes
-- [ ] Boolean [Y/n] [y/N] [y/n] ...
+- [x] Boolean [Y/n] [y/N] [y/n] ...
 
 #### More Ideas
 - [ ] Dropdown Menu
@@ -47,10 +47,3 @@ Tags:
     - tag2
     - tag3
 ```
-
-Here, `[X]` represents a removable tag. When a user clicks on it, the tag is removed from the list.
-
-### Implementation:
-In a web application, this could be implemented using input fields that allow for the entry of multiple values, often using libraries or frameworks to handle the input and display efficiently.
-
-Overall, tags provide a flexible way for users to add contextual information to items, making it easier to categorize, filter, and search content.

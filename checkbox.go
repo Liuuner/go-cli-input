@@ -1,4 +1,4 @@
-package go_cli_input
+package input
 
 import (
 	"atomicgo.dev/keyboard/keys"
@@ -99,9 +99,11 @@ func handleCheckbox[T any](s *CheckboxState[T], key keys.Key) (stop bool, err er
 	case keys.Space:
 		//check/uncheck current
 		s.items[s.cursorPos].checked = !s.items[s.cursorPos].checked
+	case keys.Enter:
+		stop, err = true, nil
 	}
 
-	return false, nil
+	return
 }
 
 func closeCheckbox[T any](s *CheckboxState[T], err error) (summary string) {

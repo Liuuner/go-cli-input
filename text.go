@@ -1,4 +1,4 @@
-package go_cli_input
+package input
 
 import (
 	"atomicgo.dev/keyboard/keys"
@@ -116,9 +116,11 @@ func handleText(s *TextState, key keys.Key) (stop bool, err error) {
 		s.text = append(s.text[:s.position], append(key.Runes, s.text[s.position:]...)...)
 		s.position += len(key.Runes)
 		cursor.MoveHorizontally(len(key.Runes))
+	case keys.Enter:
+		stop, err = true, nil
 	}
 
-	return false, nil
+	return
 }
 
 func closeText(s *TextState, err error) (summary string) {

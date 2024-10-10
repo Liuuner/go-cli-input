@@ -1,4 +1,4 @@
-package go_cli_input
+package input
 
 import (
 	"atomicgo.dev/keyboard"
@@ -29,18 +29,13 @@ var col = colors.CreateColors(true)
 func (i *Input[T]) Open() (state T, err error) {
 
 	if i.hasPrompt {
-		if i.isLevelWithPrompt {
-			fmt.Printf("%s %s: %s",
-				col.Cyan(i.promptString),
-				i.userPrompt,
-				col.Gray(i.inputPrompt),
-			)
-		} else {
-			fmt.Printf("%s %s: %s\n",
-				col.Cyan(i.promptString),
-				i.userPrompt,
-				col.Gray(i.inputPrompt),
-			)
+		fmt.Printf("%s %s %s",
+			col.Cyan(i.promptString),
+			i.userPrompt,
+			col.Gray(i.inputPrompt),
+		)
+		if !i.isLevelWithPrompt {
+			fmt.Print("\n")
 		}
 	}
 
@@ -52,9 +47,6 @@ func (i *Input[T]) Open() (state T, err error) {
 			return true, errors.New("terminated with SIGINT (130)")
 		case keys.Escape:
 			return true, errors.New("canceled")
-
-		case keys.Enter:
-			return true, nil
 		}
 
 		stop, err = i.handleInput(&i.state, key)
@@ -74,13 +66,13 @@ func (i *Input[T]) Open() (state T, err error) {
 
 	if i.hasSummary {
 		if err != nil {
-			fmt.Printf("%s %s: %s\n",
+			fmt.Printf("%s %s %s\n",
 				col.Red(i.failedString),
 				i.userPrompt,
 				col.Gray(summary),
 			)
 		} else {
-			fmt.Printf("%s %s: %s\n",
+			fmt.Printf("%s %s %s\n",
 				col.Green(i.completedString),
 				i.userPrompt,
 				col.Gray(summary),

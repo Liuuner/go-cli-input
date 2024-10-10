@@ -1,4 +1,4 @@
-package go_cli_input
+package input
 
 import (
 	"atomicgo.dev/keyboard/keys"
@@ -82,9 +82,11 @@ func handleSelect[T any](s *SelectState[T], key keys.Key) (stop bool, err error)
 	case keys.Down:
 		s.cursorPos++
 		s.keepPosInBoundaries()
+	case keys.Enter:
+		stop, err = true, nil
 	}
 
-	return false, nil
+	return
 }
 
 func closeSelect[T any](s *SelectState[T], err error) (summary string) {

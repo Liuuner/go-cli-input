@@ -1,8 +1,6 @@
 package main
 
-import (
-	input "github.com/liuuner/go-cli-input"
-)
+import "github.com/liuuner/go-cli-input"
 
 func main() {
 	var err error
@@ -42,6 +40,13 @@ func main() {
 	})
 
 	_, err = s4.Open()
+	if err != nil {
+		return
+	}
+
+	s5 := input.NewBoolean(0)
+
+	_, err = s5.Open()
 	if err != nil {
 		return
 	}

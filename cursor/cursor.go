@@ -28,10 +28,6 @@ func StartOfLine() {
 	fmt.Print("\r")
 }
 
-func DeleteCharacter(n int) {
-	fmt.Printf("\u001B[%dD \u001B[%dP", n+1, n)
-}
-
 // Move the cursor left or right by a certain number of columns
 func MoveHorizontally(offset int) {
 	if offset > 0 {
