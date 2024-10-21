@@ -20,7 +20,7 @@ type CheckboxState[T any] struct {
 	cursorPos int
 }
 
-func NewCheckbox[T any](items []T, getName func(T) string) Input[CheckboxState[T]] {
+func NewCheckbox[T any](prompt string, items []T, getName func(T) string) Input[CheckboxState[T]] {
 	i := newInput[CheckboxState[T]]()
 
 	checkboxItems := make([]CheckboxItem[T], len(items))
@@ -38,8 +38,8 @@ func NewCheckbox[T any](items []T, getName func(T) string) Input[CheckboxState[T
 		render:          renderCheckbox[T],
 		handleInput:     handleCheckbox[T],
 		close:           closeCheckbox[T],
-		userPrompt:      "Checkbox an Option",
-		inputPrompt:     "› - Use arrow-keys. Return to submit. bla bla",
+		userPrompt:      prompt,
+		inputPrompt:     "› - Use arrow-keys. Return to submit.",
 		hasPrompt:       i.hasPrompt,
 		hasSummary:      i.hasSummary,
 		failedString:    i.failedString,

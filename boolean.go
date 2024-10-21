@@ -17,7 +17,7 @@ type BooleanState struct {
 	position       int // Cursor position within the text
 }
 
-func NewBoolean(defaultBoolean int) Input[BooleanState] {
+func NewBoolean(prompt string, defaultBoolean int) Input[BooleanState] {
 	i := newInput[BooleanState]()
 
 	state := BooleanState{
@@ -28,18 +28,18 @@ func NewBoolean(defaultBoolean int) Input[BooleanState] {
 		position:       0,
 	}
 
-	inputPrompt := "[y/n]"
+	inputPrompt := "[y/n] "
 	if defaultBoolean == 0 {
-		inputPrompt = "[y/N]"
+		inputPrompt = "[y/N] "
 	} else if defaultBoolean == 1 {
-		inputPrompt = "[Y/n]"
+		inputPrompt = "[Y/n] "
 	}
 
 	return Input[BooleanState]{
 		render:            renderBoolean,
 		handleInput:       handleBoolean,
 		close:             closeBoolean,
-		userPrompt:        "Are you sure?",
+		userPrompt:        prompt,
 		inputPrompt:       inputPrompt,
 		hasPrompt:         i.hasPrompt,
 		hasSummary:        i.hasSummary,
@@ -144,8 +144,9 @@ func closeBoolean(s *BooleanState, err error) (summary string) {
 	return
 }
 
-func (s *BooleanState) Resolve() string {
-	return string(s.text)
+func (s *BooleanState) Resolve() bool {
+	b, _ := s.getBoolean()
+	return b
 }
 
 func (s *BooleanState) getBoolean() (b bool, err error) {

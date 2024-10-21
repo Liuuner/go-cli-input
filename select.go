@@ -15,7 +15,7 @@ type SelectState[T any] struct {
 	cursorPos  int
 }
 
-func NewSelect[T any](items []T, getName func(T) string) Input[SelectState[T]] {
+func NewSelect[T any](prompt string, items []T, getName func(T) string) Input[SelectState[T]] {
 	i := newInput[SelectState[T]]()
 
 	state := SelectState[T]{
@@ -29,7 +29,7 @@ func NewSelect[T any](items []T, getName func(T) string) Input[SelectState[T]] {
 		render:          renderSelect[T],
 		handleInput:     handleSelect[T],
 		close:           closeSelect[T],
-		userPrompt:      "Select an Option",
+		userPrompt:      prompt,
 		inputPrompt:     "› - Use arrow-keys. Return to submit.",
 		hasPrompt:       i.hasPrompt,
 		hasSummary:      i.hasSummary,

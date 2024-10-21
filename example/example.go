@@ -1,10 +1,14 @@
 package main
 
-import "github.com/liuuner/go-cli-input"
+import (
+	"fmt"
+	input "github.com/liuuner/go-cli-input"
+)
 
 func main() {
 	var err error
 
+	// List of items
 	items := []string{
 		"Item 1",
 		"Item 2",
@@ -12,42 +16,60 @@ func main() {
 		"Item 4",
 	}
 
-	s := input.NewSelect(items, func(s string) string {
+	// Select input
+	s := input.NewSelect("Select an Option:", items, func(s string) string {
 		return s
 	})
 
-	_, err = s.Open()
+	state, err := s.Open()
 	if err != nil {
 		return
 	}
+	selectedOption := state.Resolve()
 
-	s2 := input.NewText("myDefault", false)
+	// Text input for email
+	s2 := input.NewText("Enter your Email:", input.WithDefaultText("example@mail.com"))
 
-	_, err = s2.Open()
+	state2, err := s2.Open()
 	if err != nil {
 		return
 	}
+	email := state2.Resolve()
 
-	s3 := input.NewText("myDefault", true)
+	// Text input for password (sensitive input)
+	s3 := input.NewText("Enter your Password:", input.WithIsSensitive(true))
 
-	_, err = s3.Open()
+	state3, err := s3.Open()
 	if err != nil {
 		return
 	}
+	password := state3.Resolve()
 
-	s4 := input.NewCheckbox(items, func(s string) string {
+	// Checkbox input
+	s4 := input.NewCheckbox("Select one or more options:", items, func(s string) string {
 		return s
 	})
 
-	_, err = s4.Open()
+	state4, err := s4.Open()
 	if err != nil {
 		return
 	}
+	selectedCheckboxes := state4.Resolve()
 
-	s5 := input.NewBoolean(0)
+	// Boolean input
+	s5 := input.NewBoolean("Are you sure?", 0)
 
-	_, err = s5.Open()
+	state5, err := s5.Open()
 	if err != nil {
 		return
 	}
+	confirmation := state5.Resolve()
+
+	// Print all results
+	fmt.Println("Selected Option:", selectedOption)
+	fmt.Println("Entered Email:", email)
+	fmt.Println("Entered Password:", password)
+	fmt.Println("Selected Checkboxes:", selectedCheckboxes)
+	fmt.Println("Confirmation:", confirmation)
+
 }

@@ -13,29 +13,37 @@ type TextState struct {
 	isSensitive bool
 }
 
-func NewText(defaultValue string, isSensitive bool) Input[TextState] {
+type TextOption func(*Input[TextState])
+
+func NewText(prompt string, opts ...TextOption) Input[TextState] {
 	i := newInput[TextState]()
 
-	state := TextState{
-		defaultText: []rune(defaultValue),
+	ts := TextState{
+		defaultText: []rune{},
 		text:        []rune{},
-		isSensitive: isSensitive,
+		isSensitive: false,
 		position:    0,
 	}
 
-	return Input[TextState]{
+	s := Input[TextState]{
 		render:            renderText,
 		handleInput:       handleText,
 		close:             closeText,
-		userPrompt:        "What is your name",
+		userPrompt:        prompt,
 		hasPrompt:         i.hasPrompt,
 		hasSummary:        i.hasSummary,
 		failedString:      i.failedString,
 		completedString:   i.completedString,
 		promptString:      i.promptString,
 		isLevelWithPrompt: true,
-		state:             state,
+		state:             ts,
 	}
+
+	for _, opt := range opts {
+		opt(&s)
+	}
+
+	return s
 }
 
 // Render the text relative to the initial position
@@ -142,5 +150,27 @@ func closeText(s *TextState, err error) (summary string) {
 }
 
 func (s *TextState) Resolve() string {
+	if len(s.text) == 0 {
+		return string(s.defaultText)
+	}
 	return string(s.text)
+}
+
+func WithDefaultText(v string) TextOption {
+	return func(s *Input[TextState]) {
+		s.state.defaultText = []rune(v)
+	}
+}
+
+func WithText(v string) TextOption {
+	return func(s *Input[TextState]) {
+		s.state.text = []rune(v)
+		s.state.position = len(v)
+	}
+}
+
+func WithIsSensitive(b bool) TextOption {
+	return func(s *Input[TextState]) {
+		s.state.isSensitive = b
+	}
 }
