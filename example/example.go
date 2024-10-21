@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	input "github.com/liuuner/go-cli-input"
+	"github.com/liuuner/go-cli-input"
 )
 
 func main() {
